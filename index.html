@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nathan Walker | GIS Developer & Data Scientist</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1117'/><text x='50%' y='54%' dominant-baseline='central' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='12' fill='%23f0f6fc'>NW<tspan fill='%233fb68b'>.</tspan></text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    #topo-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --accent: #3fb68b;
+      --accent-light: #5ccba3;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+      --nav-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      background: transparent;
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(13,17,23,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text-bright); }
+    .nav-resume-btn {
+      color: var(--accent) !important;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 0.3rem 0.85rem;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-resume-btn:hover {
+      background: var(--accent);
+      color: #0d1117 !important;
+    }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 2rem) 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(63,182,139,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(63,182,139,0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 960px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0d1117;
+    }
+    .btn-primary:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(63,182,139,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-photo-wrap {
+      position: relative;
+    }
+    .hero-photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent), transparent, var(--accent));
+      opacity: 0.3;
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero-photo {
+      width: 370px;
+      height: 370px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      border: 3px solid var(--bg);
+      position: relative;
+      display: block;
+    }
+
+    /* ── Shared section styles ── */
+    section { padding: 5rem 2.5rem; }
+    section + section {
+      border-top: none;
+      position: relative;
+    }
+    section + section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--accent) 30%, var(--accent) 70%, transparent);
+      opacity: 0.45;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 3rem;
+    }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .about-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    .about-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .skills-wrap { }
+    .skills-subtitle {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .skill-tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: border-color 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Projects ── */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .filter-btn:hover { color: var(--text-bright); border-color: #555; }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0d1117; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.22s;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: rgba(63,182,139,0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+    .project-card.hidden { display: none; }
+
+    .card-img-wrap {
+      overflow: hidden;
+      height: 185px;
+    }
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .project-card:hover .card-img { transform: scale(1.04); }
+
+    .card-body {
+      padding: 1.2rem 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.4rem;
+    }
+    .card-title {
+      font-weight: 600;
+      color: var(--text-bright);
+      font-size: 0.92rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .card-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* No-image cards get a decorative bg */
+    .card-no-img {
+      padding: 2rem 1.5rem 1.5rem;
+    }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    /* ── Modal / Lightbox ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+    .modal-img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 8px;
+      object-fit: contain;
+      display: block;
+    }
+    .modal-close {
+      position: absolute;
+      top: -2.8rem;
+      right: 0;
+      color: white;
+      font-size: 1.6rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .modal-close:hover { opacity: 1; }
+
+    /* ── Contact ── */
+    #contact { text-align: center; }
+    .contact-lead {
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: -2rem auto 2.5rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── Location Map ── */
+    #location {
+      padding: 0;
+    }
+    #map {
+      width: 100%;
+      height: 420px;
+      display: block;
+    }
+    .map-label {
+      text-align: center;
+      padding: 1rem 2rem 0.25rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Blog ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .blog-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .blog-card:hover {
+      border-color: rgba(63,182,139,0.5);
+      transform: translateY(-3px);
+    }
+    .blog-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .blog-card-tag {
+      background: rgba(63,182,139,0.08);
+      border: 1px solid rgba(63,182,139,0.2);
+      color: var(--accent);
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .blog-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      line-height: 1.35;
+    }
+    .blog-card-excerpt {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .blog-card-action {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-photo-wrap {
+        order: -1;
+        margin: 0 auto;
+        width: fit-content;
+      }
+      .hero-photo { width: 300px; height: 300px; }
+      .hero-actions { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.25rem; }
+    }
+
+    /* ── Magna Carto ── */
+    .magna-carto-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .magna-carto-text p {
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      line-height: 1.8;
+    }
+    .magna-carto-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.01em;
+    }
+    .magna-carto-name span { color: var(--accent); }
+    .magna-carto-tagline {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+    .magna-carto-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .magna-carto-badge {
+      background: rgba(63,182,139,0.08);
+      border: 1px solid rgba(63,182,139,0.25);
+      color: var(--accent);
+      padding: 0.3rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .magna-carto-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .magna-carto-emblem {
+      width: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .magna-carto-emblem img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .magna-carto-products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+    }
+    .magna-carto-product {
+      aspect-ratio: 4/3;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      transition: border-color 0.2s;
+    }
+    .magna-carto-product:hover { border-color: var(--accent); }
+    .magna-carto-product svg { opacity: 0.35; }
+    @media (max-width: 768px) {
+      .magna-carto-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .magna-carto-visual { order: -1; }
+      .magna-carto-emblem { width: 300px; }
+    }
+
+    /* ── Code panel ── */
+    .code-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 300;
+      display: none;
+      justify-content: flex-end;
+    }
+    .code-overlay.open { display: flex; }
+
+    .code-panel {
+      width: min(760px, 100vw);
+      height: 100vh;
+      background: #161b22;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .code-overlay.open .code-panel { transform: translateX(0); }
+
+    .code-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+    .code-panel-filename {
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.9rem;
+      color: var(--text-bright);
+      font-weight: 600;
+    }
+    .code-panel-lang {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(63,182,139,0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+    .code-panel-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+    .code-panel-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .code-panel-btn:hover { color: var(--text-bright); border-color: #555; }
+    .code-panel-btn.copied { color: var(--accent); border-color: var(--accent); }
+
+    .code-panel-body {
+      flex: 1;
+      overflow: auto;
+      padding: 0;
+    }
+    .code-panel-body pre {
+      margin: 0;
+      height: 100%;
+    }
+    .code-panel-body pre code {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      padding: 1.5rem !important;
+      background: transparent !important;
+    }
+    .code-panel-error {
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="topo-bg" aria-hidden="true"></canvas>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a class="nav-logo" href="#hero">NW<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#magna-carto">Magna Carto</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="Current_Resume_2026.pdf" target="_blank" rel="noopener" class="nav-resume-btn">Resume</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">GIS Developer &nbsp;·&nbsp; Spatial Data Scientist &nbsp;·&nbsp; Small Business Owner</div>
+      <h1 class="hero-title">Nathan Walker</h1>
+      <p class="hero-subtitle">
+        GIS aficionado with experience in GIS, spatial statistics, data wrangling, AI, and programming solutions
+        Currently a GIS Developer at Ruekert & Mielke, Inc in Waukesha, Wisconsin.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <img src="ProfessionalPhoto.jpg" alt="Nathan Walker" class="hero-photo" />
+    </div>
+  </div>
+</section>
+
+<!-- ── About ── -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">Background</div>
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Hello! My name is Nathan Walker. I am an early-career GIS Developer at Ruekert & Mielke Inc, owner and founder of Magna Carto, LLC, and an aspiring spatial data scientist! I received a Master's of Science in Geography from Southern Illinois University - Edwardsville, and undergraduate degrees in Geography and Economics from University of Wisconsin - Eau Claire.
+        <p>
+		  I fell in love with GIS and working with data early in my academic journey, and learned how to code to wrangle data, build models, and analyze insights with a variety of spatial and economic data. Along the way I discovered a knack for programming that led me to my developer role today. I have particular interests in AI, machine learning, spatial econometrics models, and a few other odds and ends you will find in my portfolio.
+        </p>
+        <p>
+          I pride myself on going beyond conventional tools — always exploring new technologies and methods
+          that expand my capabilities and make the work more meaningful.
+        </p>
+        <div class="about-links">
+          <a href="mailto:natewalk22@gmail.com" class="about-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            natewalk22@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/nathan-walker-bb22301bb/" target="_blank" rel="noopener" class="about-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/WalkerGeospatial" target="_blank" rel="noopener" class="about-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="skills-wrap">
+        <div class="skills-subtitle">GIS &amp; Spatial</div>
+        <div class="skills-grid">
+          <span class="skill-tag">ArcGIS Ecosystem</span>
+          <span class="skill-tag">FME</span>
+          <span class="skill-tag">QGIS</span>
+          <span class="skill-tag">Remote Sensing</span>
+          <span class="skill-tag">Spatial Statistics</span>
+          <span class="skill-tag">Spatial Autocorrelation</span>
+          <span class="skill-tag">PostGIS</span>
+          <span class="skill-tag">GeoDa</span>
+          <span class="skill-tag">VertiGIS</span>
+        </div>
+        <div class="skills-subtitle">Programming &amp; Data</div>
+        <div class="skills-grid">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Flask</span>
+          <span class="skill-tag">Selenium</span>
+          <span class="skill-tag">arcpy</span>
+          <span class="skill-tag">ArcGIS API for Python</span>
+          <span class="skill-tag">geopandas</span>
+		  <span class="skill-tag">PyTorch</span>
+		  <span class="skill-tag">TensorFlow</span>
+          <span class="skill-tag">R</span>
+          <span class="skill-tag">sf</span>
+          <span class="skill-tag">ggplot2</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">leaflet</span>
+          <span class="skill-tag">Shiny</span>
+          <span class="skill-tag">Econometrics</span>
+          <span class="skill-tag">Arcade</span>
+        </div>
+        <div class="skills-subtitle">Tools &amp; Platforms</div>
+        <div class="skills-grid">
+          <span class="skill-tag">Blender</span>
+          <span class="skill-tag">Adobe Illustrator</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Azure</span>
+          <span class="skill-tag">LaTeX</span>
+          <span class="skill-tag">Excel</span>
+          <span class="skill-tag">SPSS</span>
+          <span class="skill-tag">EViews</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Magna Carto ── -->
+<section id="magna-carto">
+  <div class="container">
+    <div class="section-label">Business</div>
+    <div class="magna-carto-inner">
+      <div class="magna-carto-text">
+        <div class="magna-carto-name">Magna Carto<span>,</span> LLC</div>
+        <div class="magna-carto-tagline">3D printed topographic map magnets of states and counties</div>
+        <p>
+          Magna Carto is my 3D printing company for producing magnetic topographic maps.
+          I produce a range of products, with the most popular being puzzle maps of counties that fit together.
+          Other sizes of individual states and counties are also available.
+        </p>
+        <p>
+          I also produce custom maps and colors available on request for various organizations, using tools I developed to make models more reliably than other competitors.
+        </p>
+        <div class="magna-carto-badges">
+          <span class="magna-carto-badge">GIS Development</span>
+          <span class="magna-carto-badge">Spatial Analysis</span>
+          <span class="magna-carto-badge">Web Mapping</span>
+          <span class="magna-carto-badge">Data Pipelines</span>
+          <span class="magna-carto-badge">Consulting</span>
+        </div>
+        <a href="#" class="btn btn-primary" target="_blank" rel="noopener">
+          Website Coming Soon
+        </a>
+      </div>
+      <div class="magna-carto-visual">
+        <div class="magna-carto-emblem">
+          <img src="magna_carto_logo.png" alt="Magna Carto LLC logo" />
+        </div>
+        <div class="magna-carto-products">
+          <div class="magna-carto-product">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Coming Soon
+          </div>
+          <div class="magna-carto-product">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Coming Soon
+          </div>
+          <div class="magna-carto-product">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Coming Soon
+          </div>
+          <div class="magna-carto-product">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Coming Soon
+          </div>
+          <div class="magna-carto-product">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Coming Soon
+          </div>
+          <div class="magna-carto-product">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Coming Soon
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ── -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Work</div>
+    <h2 class="section-title">Projects</h2>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="map">Maps</button>
+      <button class="filter-btn" data-filter="webapp">Web Apps</button>
+      <button class="filter-btn" data-filter="code">Code</button>
+      <button class="filter-btn" data-filter="research">Research</button>
+      <button class="filter-btn" data-filter="poster">Posters</button>
+      <button class="filter-btn" data-filter="tutorial">Tutorials / Workshops</button>
+      <button class="filter-btn" data-filter="presentation">Presentations</button>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Maps -->
+      <a class="project-card" data-cat="map" data-lightbox data-img="Bay_Area_Time_Series.jpg" href="#">
+        <div class="card-img-wrap">
+          <img src="Bay_Area_Time_Series.jpg" alt="Bay Area Time Series" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Maps</div>
+          <div class="card-title">Bay Area Time Series Analysis</div>
+          <div class="card-desc">Temporal GIS analysis tracking geographic change patterns across the San Francisco Bay Area.</div>
+          <span class="card-action">View full map ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="map" data-lightbox data-img="Crashes.jpg" href="#">
+        <div class="card-img-wrap">
+          <img src="Crashes.jpg" alt="Crash Cluster Analysis" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Maps</div>
+          <div class="card-title">Traffic Crash Cluster Analysis</div>
+          <div class="card-desc">Spatial cluster analysis identifying high-density crash corridors and risk hotspots.</div>
+          <span class="card-action">View full map ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="map" data-lightbox data-img="Divy_Bike_Map.jpg" href="#">
+        <div class="card-img-wrap">
+          <img src="Divy_Bike_Map.jpg" alt="Divvy Bikes Chicago" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Maps</div>
+          <div class="card-title">Divvy Bikes Chicago – Popularity Tessellation</div>
+          <div class="card-desc">Tessellation map visualizing bikeshare station popularity across Chicago's neighborhoods.</div>
+          <span class="card-action">View full map ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="map" data-lightbox data-img="Africa_Coffee_Map1024_1.jpg" href="#">
+        <div class="card-img-wrap">
+          <img src="Africa_Coffee_Map1024_1.jpg" alt="Africa Coffee Map" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Maps · Illustrator</div>
+          <div class="card-title">Africa Coffee Production Map</div>
+          <div class="card-desc">Custom cartographic illustration of African coffee production regions, designed in Adobe Illustrator.</div>
+          <span class="card-action">View full map ↗</span>
+        </div>
+      </a>
+
+
+      <a class="project-card" data-cat="map" data-lightbox data-img="VietnamRelief.png" href="#">
+        <div class="card-img-wrap">
+          <img src="VietnamRelief.png" alt="Vietnam Relief Map" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Maps · Blender</div>
+          <div class="card-title">Vietnam Relief Map</div>
+          <div class="card-desc">3D relief map of Vietnam generated in Blender, highlighting the country's dramatic terrain and topographic features.</div>
+          <span class="card-action">View full map ↗</span>
+        </div>
+      </a>
+
+      <!-- Web Apps -->
+      <a class="project-card" data-cat="webapp"
+         href="https://natewalk.shinyapps.io/MadisonCountyEnvironmentalEquity/" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🌍</span>
+          <div class="card-tag">Web App · R Shiny</div>
+          <div class="card-title">Environmental Equity in Madison County</div>
+          <div class="card-desc">Interactive dashboard exploring environmental equity indicators across Madison County, Illinois. Built with R Shiny.</div>
+          <span class="card-action">Open live app ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="webapp"
+         href="https://natewalk.shinyapps.io/SpatialAutocorrelation/" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">📊</span>
+          <div class="card-tag">Web App · R Shiny</div>
+          <div class="card-title">Spatial Autocorrelation Educational Tool</div>
+          <div class="card-desc">Interactive learning tool demonstrating spatial autocorrelation concepts for students and instructors.</div>
+          <span class="card-action">Open live app ↗</span>
+        </div>
+      </a>
+
+      <!-- Research -->
+      <a class="project-card" data-cat="research" href="ThesisMay2024GradSchool.pdf" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🎓</span>
+          <div class="card-tag">M.S. Thesis</div>
+          <div class="card-title">Analyzing Significant Built Environment and Socioeconomic Factors in Relation to Public Bike-Share Usage in Minneapolis, San Francisco, and Portland</div>
+          <div class="card-desc">Spatial econometric study examining how built environment and socioeconomic factors influence bike-share usage across three major US cities, using ACS, EPA Smart Location Database, and municipal datasets.</div>
+          <span class="card-action">View PDF ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="research" href="Tourism_Hobbit_Or_Kiwi.pdf" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">📄</span>
+          <div class="card-tag">Research Paper</div>
+          <div class="card-title">Hobbit or Kiwi: Lord of the Rings Tourism, Sustainability &amp; National Identity</div>
+          <div class="card-desc">Analysis of film tourism's impact on New Zealand's national identity and sustainable tourism practices.</div>
+          <span class="card-action">View PDF ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="research" href="Vietnam_Instagram_Analysis.pdf" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">📄</span>
+          <div class="card-tag">Research Paper</div>
+          <div class="card-title">Vietnam National Instagram Content Analysis</div>
+          <div class="card-desc">Content analysis of Instagram posts representing Vietnam's national tourism narrative.</div>
+          <span class="card-action">View PDF ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="research" href="NuclearCourseProject.docx" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">📄</span>
+          <div class="card-tag">Research Paper</div>
+          <div class="card-title">Nuclear Site Suitability Analysis – Wisconsin</div>
+          <div class="card-desc">GIS-based multi-criteria site suitability analysis for potential nuclear facility locations in Wisconsin.</div>
+          <span class="card-action">View document ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="research" href="CapstonePaper.pdf" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🎓</span>
+          <div class="card-tag">Research · Capstone</div>
+          <div class="card-title">Urban Heat Island Analysis – Milwaukee, Wisconsin</div>
+          <div class="card-desc">Capstone research analyzing demographic and socioeconomic exposure to the urban heat island effect in Milwaukee.</div>
+          <span class="card-action">View PDF ↗</span>
+        </div>
+      </a>
+
+      <!-- Posters -->
+      <a class="project-card" data-cat="poster" data-lightbox data-img="WalkabilityPoster.png" href="#">
+        <div class="card-img-wrap" style="background:#161b22;">
+          <img src="WalkabilityPoster.png" alt="Walkability Poster" class="card-img" style="object-fit:contain;" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Poster</div>
+          <div class="card-title">Walkability Analysis</div>
+          <div class="card-desc">Spatial analysis of urban walkability scores and contributing environmental factors.</div>
+          <span class="card-action">View full size ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="poster" data-lightbox data-img="CyclingSafetyPoster.png" href="#">
+        <div class="card-img-wrap" style="background:#161b22;">
+          <img src="CyclingSafetyPoster.png" alt="Cycling Safety Poster" class="card-img" style="object-fit:contain;" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Poster</div>
+          <div class="card-title">Cycling Safety Analysis</div>
+          <div class="card-desc">Visual analysis of cycling safety patterns, risk factors, and infrastructure.</div>
+          <span class="card-action">View full size ↗</span>
+        </div>
+      </a>
+
+
+      <!-- Code examples -->
+      <a class="project-card" data-cat="code" data-code-file="spatial_regression_IL_tracts.R" data-code-lang="r" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">R &mdash; Spatial Econometrics</div>
+          <div class="card-title">Spatial Regression: Illinois Census Tracts</div>
+          <div class="card-desc">Compares OLS, Spatial Lag, and Spatial Error models predicting poverty and educational attainment across Illinois census tracts. Builds queen-contiguity spatial weights, runs Moran&rsquo;s I and Lagrange Multiplier diagnostics to select the appropriate model specification, and exports formatted comparison tables via stargazer.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="descriptive_stats_index_construction.R" data-code-lang="r" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">R &mdash; Data Analysis</div>
+          <div class="card-title">Descriptive Statistics &amp; Index Construction</div>
+          <div class="card-desc">Generates summary statistics (mean, median, IQR, skewness, kurtosis) and distribution plots for demographic and income variables across Illinois census tracts. Constructs a custom Educational Index via z-score normalization across four education attainment variables, and a Diversity Index based on deviation from proportional racial equality.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="correlation_analysis.R" data-code-lang="r" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">R &mdash; Statistics</div>
+          <div class="card-title">Correlation Analysis &amp; Matrix Visualization</div>
+          <div class="card-desc">Implements a reusable <code>correlation_tests()</code> function that runs Pearson correlation tests against a target field across any set of variables, returning coefficients, R&sup2;, and p-values. Applied across GSS 2018 and U.S. States datasets to examine relationships between age, education, crime, and income variables. Produces correlation matrix plots with significance markers via corrplot.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="CulversScriptPortrait.ino" data-code-lang="cpp" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">C++ &mdash; Arduino / IoT</div>
+          <div class="card-title">Culver's Flavor of the Day Tracker</div>
+          <div class="card-desc">ESP32 Arduino sketch that connects to WiFi, queries the Culver's locations API, and displays the Flavor of the Day for up to 9 nearby locations on a TFT display. Cycles through locations every 12 seconds and refreshes data every 50 minutes.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="topo-background.js" data-code-lang="javascript" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">JavaScript &mdash; Canvas / Generative Art</div>
+          <div class="card-title">Topographic Background Renderer</div>
+          <div class="card-desc">Procedurally generates an animated topographic contour line background using a Gaussian height field and Marching Squares. Peaks are randomized on each load, contours are extracted at multiple elevation levels, raw segments are chained into polylines, and each line draws itself in with a staggered ease-out animation.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Tutorials / Workshops -->
+      <a class="project-card" data-cat="tutorial"
+         href="https://github.com/WalkerGeospatial/WLIA_AGO_HFL_Management" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🗺️</span>
+          <div class="card-tag">Tutorial / Workshop</div>
+          <div class="card-title">WLIA ArcGIS Online Hosted Feature Layer Management</div>
+          <div class="card-desc">A series of Jupyter notebook scripts for managing hosted feature layers in ArcGIS Online, developed for the Wisconsin Land Information Association.</div>
+          <span class="card-action">View on GitHub ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="tutorial" href="GeodatabaseTutorial.pdf" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">📚</span>
+          <div class="card-tag">Tutorial / Workshop</div>
+          <div class="card-title">Geodatabase Tutorial</div>
+          <div class="card-desc">Step-by-step guide to creating and managing geodatabases in ArcGIS.</div>
+          <span class="card-action">View PDF ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="tutorial"
+         href="https://natewalk22.github.io/GISHospitalTutorial/" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🏥</span>
+          <div class="card-tag">Tutorial / Workshop</div>
+          <div class="card-title">GIS Hospital Site Selection Tutorial</div>
+          <div class="card-desc">Interactive walkthrough of GIS-based hospital site selection methodology.</div>
+          <span class="card-action">Open tutorial ↗</span>
+        </div>
+      </a>
+
+      <!-- Presentations -->
+      <a class="project-card" data-cat="presentation" href="#" onclick="return false;">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Conference Presentation &mdash; May 2025</div>
+          <div class="card-title">GIS Software Solutions for MS4 Illicit Discharge Detection and Elimination</div>
+          <div class="card-desc">Presented scalable GIS-based approaches for MS4 illicit discharge detection and elimination at the Wisconsin Land Information Association Spring Conference, Pewaukee, WI.</div>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="presentation" href="#" onclick="return false;">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Conference Presentation &mdash; November 2024</div>
+          <div class="card-title">Unlocking Data Potential: Using the ArcGIS Data Interoperability Extension to Meet DNR LCRR Requirements</div>
+          <div class="card-desc">Presented at the ESRI Wisconsin User Group in Green Bay, WI, demonstrating how the ArcGIS Data Interoperability Extension can be leveraged to satisfy DNR Lead and Copper Rule Revisions reporting requirements.</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Blog ── -->
+<section id="blog">
+  <div class="container">
+    <div class="section-label">Writing</div>
+    <h2 class="section-title">Blog</h2>
+    <div class="blog-grid">
+
+      <a class="blog-card" href="blog/3d-wisconsin-puzzle-map.html">
+        <div class="blog-card-meta">
+          <span class="blog-card-tag">GIS &nbsp;·&nbsp; 3D Printing</span>
+          <span>February 27, 2026</span>
+        </div>
+        <div class="blog-card-title">A Week of Printing, 100+ Magnets, and One Very Unique Map</div>
+        <div class="blog-card-excerpt">Each county in Wisconsin as its own 3D-printed terrain tile, held together by embedded magnets. What started as a simple question turned into a WLIA Map Contest win for Best in Category – Most Unique.</div>
+        <span class="blog-card-action">Read more →</span>
+      </a>
+
+      <a class="blog-card" href="blog/conference-tips-gis-developer.html">
+        <div class="blog-card-meta">
+          <span class="blog-card-tag">Career</span>
+          <span>March 3, 2026</span>
+        </div>
+        <div class="blog-card-title">Getting the Most Out of a Conference as a GIS Developer</div>
+        <div class="blog-card-excerpt">Conferences are only as valuable as the preparation you put in. A three-stage framework — before, during, and after — for turning a few days of sessions and networking into something that actually sticks.</div>
+        <span class="blog-card-action">Read more →</span>
+      </a>
+
+      <a class="blog-card" href="blog/esri-dev-summit-2026.html">
+        <div class="blog-card-meta">
+          <span class="blog-card-tag">GIS &nbsp;·&nbsp; AI &nbsp;·&nbsp; Esri</span>
+          <span>March 15, 2026</span>
+        </div>
+        <div class="blog-card-title">7 Takeaways from the Esri Developer &amp; Technology Summit 2026</div>
+        <div class="blog-card-excerpt">From mochi ice cream to MCP servers — a quick rundown of what stood out at this year's Esri Dev Summit, including some genuinely exciting AI integrations and a few bigger-picture observations about where the GIS industry is headed.</div>
+        <span class="blog-card-action">Read more →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="contact-lead">
+      Whether you have a question, a collaboration idea, or just want to connect — my inbox is open.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:natewalk22@gmail.com" class="btn btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        natewalk22@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/nathan-walker-bb22301bb/" target="_blank" rel="noopener" class="btn btn-outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Location Map ── -->
+<section id="location">
+<div id="map"></div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>© 2026 Nathan Walker &nbsp;·&nbsp; GIS Development &amp; Spatial Data Science</p>
+</footer>
+
+<script>
+  const map = L.map('map', { zoomControl: true, scrollWheelZoom: false }).setView([43.0117, -88.2315], 13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+    maxZoom: 19
+  }).addTo(map);
+  const pinIcon = L.divIcon({
+    className: '',
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="38" viewBox="0 0 28 38">
+      <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 24 14 24S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="#3fb68b" stroke="#fff" stroke-width="2"/>
+      <circle cx="14" cy="14" r="5" fill="#fff"/>
+    </svg>`,
+    iconSize: [28, 38],
+    iconAnchor: [14, 38]
+  });
+  L.marker([43.0117, -88.2315], { icon: pinIcon }).addTo(map);
+</script>
+
+<!-- ── Lightbox Modal ── -->
+<!-- ── Code Panel ── -->
+<div class="code-overlay" id="codeOverlay">
+  <div class="code-panel" id="codePanel">
+    <div class="code-panel-header">
+      <span class="code-panel-filename" id="codePanelFilename"></span>
+      <span class="code-panel-lang" id="codePanelLang"></span>
+      <div class="code-panel-actions">
+        <button class="code-panel-btn" id="codeCopyBtn">Copy</button>
+        <button class="code-panel-btn" id="codeCloseBtn">✕ Close</button>
+      </div>
+    </div>
+    <div class="code-panel-body" id="codePanelBody"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-inner">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <img src="" alt="" class="modal-img" id="modalImg" />
+  </div>
+</div>
+
+<script>
+  /* ── Topographic background (marching squares on a Gaussian height field) ── */
+  (function () {
+    const canvas = document.getElementById('topo-bg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function rand(min, max) { return min + Math.random() * (max - min); }
+    function easeOut(t) { return 1 - (1 - t) * (1 - t); }
+
+    function computeGrid(w, h, step, peaks) {
+      const cols = Math.ceil(w / step) + 1;
+      const rows = Math.ceil(h / step) + 1;
+      const grid = [];
+      for (let r = 0; r < rows; r++) {
+        grid[r] = new Float32Array(cols);
+        for (let c = 0; c < cols; c++) {
+          const x = c * step, y = r * step;
+          let v = 0;
+          for (const p of peaks) {
+            const dx = x - p.cx, dy = y - p.cy;
+            v += p.amp * Math.exp(-(dx * dx + dy * dy) / (2 * p.sig * p.sig));
+          }
+          grid[r][c] = v;
+        }
+      }
+      return { grid, rows, cols };
+    }
+
+    function marchSquares(grid, rows, cols, step, level) {
+      const segs = [];
+      for (let r = 0; r < rows - 1; r++) {
+        for (let c = 0; c < cols - 1; c++) {
+          const tl = grid[r][c],     tr = grid[r][c + 1];
+          const bl = grid[r + 1][c], br = grid[r + 1][c + 1];
+          const x0 = c * step, x1 = x0 + step;
+          const y0 = r * step, y1 = y0 + step;
+          const lx = (va, vb, xa, xb) =>
+            Math.abs(vb - va) < 1e-9 ? (xa + xb) / 2 : xa + (xb - xa) * (level - va) / (vb - va);
+          const ly = (va, vb, ya, yb) =>
+            Math.abs(vb - va) < 1e-9 ? (ya + yb) / 2 : ya + (yb - ya) * (level - va) / (vb - va);
+          const T = [lx(tl, tr, x0, x1), y0];
+          const R = [x1, ly(tr, br, y0, y1)];
+          const B = [lx(bl, br, x0, x1), y1];
+          const L = [x0, ly(tl, bl, y0, y1)];
+          const idx = (tl > level ? 8 : 0) | (tr > level ? 4 : 0) |
+                      (br > level ? 2 : 0) | (bl > level ? 1 : 0);
+          switch (idx) {
+            case  1: segs.push([L, B]); break;
+            case  2: segs.push([B, R]); break;
+            case  3: segs.push([L, R]); break;
+            case  4: segs.push([T, R]); break;
+            case  5: segs.push([T, R]); segs.push([L, B]); break;
+            case  6: segs.push([T, B]); break;
+            case  7: segs.push([T, L]); break;
+            case  8: segs.push([T, L]); break;
+            case  9: segs.push([T, B]); break;
+            case 10: segs.push([T, L]); segs.push([R, B]); break;
+            case 11: segs.push([T, R]); break;
+            case 12: segs.push([L, R]); break;
+            case 13: segs.push([R, B]); break;
+            case 14: segs.push([L, B]); break;
+          }
+        }
+      }
+      return segs;
+    }
+
+    function connectSegments(segs) {
+      if (!segs.length) return [];
+      const key = ([x, y]) => `${Math.round(x * 2)},${Math.round(y * 2)}`;
+      const adj = new Map();
+      for (let i = 0; i < segs.length; i++) {
+        for (const e of [0, 1]) {
+          const k = key(segs[i][e]);
+          if (!adj.has(k)) adj.set(k, []);
+          adj.get(k).push([i, e]);
+        }
+      }
+      const used = new Uint8Array(segs.length);
+      const lines = [];
+      for (let i = 0; i < segs.length; i++) {
+        if (used[i]) continue;
+        used[i] = 1;
+        const fwd = [...segs[i]];
+        for (;;) {
+          const k = key(fwd[fwd.length - 1]);
+          let found = false;
+          for (const [j, e] of (adj.get(k) || [])) {
+            if (used[j]) continue;
+            used[j] = 1; fwd.push(segs[j][e ^ 1]); found = true; break;
+          }
+          if (!found) break;
+        }
+        const bwd = [];
+        for (;;) {
+          const k = key(bwd.length ? bwd[bwd.length - 1] : segs[i][0]);
+          let found = false;
+          for (const [j, e] of (adj.get(k) || [])) {
+            if (used[j]) continue;
+            used[j] = 1; bwd.push(segs[j][e ^ 1]); found = true; break;
+          }
+          if (!found) break;
+        }
+        lines.push([...bwd.reverse(), ...fwd]);
+      }
+      return lines;
+    }
+
+    function buildPolylines(w, h) {
+      const numPeaks = Math.floor(rand(4, 7));
+      const peaks = [];
+      for (let i = 0; i < numPeaks; i++) {
+        peaks.push({
+          cx:  rand(-w * 0.2, w * 1.2),
+          cy:  rand(-h * 0.2, h * 1.2),
+          amp: rand(0.5, 1.0),
+          sig: rand(Math.min(w, h) * 0.18, Math.min(w, h) * 0.40),
+        });
+      }
+      const step = 14;
+      const { grid, rows, cols } = computeGrid(w, h, step, peaks);
+      let maxVal = 0;
+      for (let r = 0; r < rows; r++)
+        for (let c = 0; c < cols; c++)
+          if (grid[r][c] > maxVal) maxVal = grid[r][c];
+      if (maxVal < 0.01) return [];
+      const numLevels = 8;
+      const polylines = [];
+      for (let li = 1; li <= numLevels; li++) {
+        const level = maxVal * (0.05 + 0.85 * li / (numLevels + 1));
+        const lines = connectSegments(marchSquares(grid, rows, cols, step, level));
+        for (const pts of lines) {
+          if (pts.length < 2) continue;
+          polylines.push({ pts, delay: li * 140, duration: rand(700, 1100) });
+        }
+      }
+      return polylines;
+    }
+
+    function drawPolyline(pts, progress) {
+      const count = Math.floor(progress * (pts.length - 1));
+      if (count < 1) return;
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i <= count; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.stroke();
+    }
+
+    let polylines = [], animId = null, animStart = null;
+
+    function start() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      polylines = buildPolylines(canvas.width, canvas.height);
+      animStart = null;
+      if (animId) cancelAnimationFrame(animId);
+      animId = requestAnimationFrame(animate);
+    }
+
+    function animate(ts) {
+      if (!animStart) animStart = ts;
+      const elapsed = ts - animStart;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(63,182,139,0.35)';
+      ctx.lineWidth   = 1.5;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+      let done = true;
+      for (const pl of polylines) {
+        const t = (elapsed - pl.delay) / pl.duration;
+        if (t < 1) done = false;
+        const p = easeOut(Math.max(0, Math.min(1, t)));
+        if (p > 0) drawPolyline(pl.pts, p);
+      }
+      if (!done) animId = requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(() => setTimeout(start, 0));
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(start, 250);
+    });
+  })();
+</script>
+
+<script>
+  /* ── Code Panel ── */
+  const codeOverlay  = document.getElementById('codeOverlay');
+  const codePanelBody = document.getElementById('codePanelBody');
+  const codePanelFilename = document.getElementById('codePanelFilename');
+  const codePanelLang = document.getElementById('codePanelLang');
+  const codeCopyBtn  = document.getElementById('codeCopyBtn');
+  const codeCloseBtn = document.getElementById('codeCloseBtn');
+
+  let currentCode = '';
+
+  document.querySelectorAll('[data-code-file]').forEach(card => {
+    card.addEventListener('click', async e => {
+      e.preventDefault();
+      const file = card.dataset.codeFile;
+      const lang = card.dataset.codeLang || '';
+      codePanelFilename.textContent = file;
+      codePanelLang.textContent = lang;
+      codePanelBody.innerHTML = '<div class="code-panel-error">Loading…</div>';
+      codeOverlay.classList.add('open');
+
+      try {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error(res.statusText);
+        const text = await res.text();
+        currentCode = text;
+        const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const langClass = lang ? ` class="language-${lang}"` : '';
+        codePanelBody.innerHTML = `<pre><code${langClass}>${escaped}</code></pre>`;
+        codePanelBody.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+      } catch {
+        codePanelBody.innerHTML = `<div class="code-panel-error">Could not load <strong>${file}</strong>.<br>Make sure the file is in the portfolio folder and the page is served over HTTP (e.g. GitHub Pages — not opened directly from disk).</div>`;
+      }
+    });
+  });
+
+  const closeCodePanel = () => codeOverlay.classList.remove('open');
+  codeCloseBtn.addEventListener('click', closeCodePanel);
+  codeOverlay.addEventListener('click', e => { if (e.target === codeOverlay) closeCodePanel(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCodePanel(); });
+
+  codeCopyBtn.addEventListener('click', () => {
+    if (!currentCode) return;
+    navigator.clipboard.writeText(currentCode).then(() => {
+      codeCopyBtn.textContent = 'Copied!';
+      codeCopyBtn.classList.add('copied');
+      setTimeout(() => { codeCopyBtn.textContent = 'Copy'; codeCopyBtn.classList.remove('copied'); }, 2000);
+    });
+  });
+</script>
+
+<script>
+  /* ── Filter ── */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        card.classList.toggle('hidden', filter !== 'all' && card.dataset.cat !== filter);
+      });
+    });
+  });
+
+  /* ── Lightbox ── */
+  const modal    = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+  const modalClose = document.getElementById('modalClose');
+
+  document.querySelectorAll('[data-lightbox]').forEach(card => {
+    card.addEventListener('click', e => {
+      e.preventDefault();
+      const src = card.dataset.img;
+      if (src) { modalImg.src = src; modal.classList.add('open'); }
+    });
+  });
+
+  const closeModal = () => modal.classList.remove('open');
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ── Active nav on scroll ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-50% 0px -50% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

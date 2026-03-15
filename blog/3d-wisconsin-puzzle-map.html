@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Week of Printing, 100+ Magnets, and One Very Unique Map | Nathan Walker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1117'/><text x='50%' y='54%' dominant-baseline='central' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='12' fill='%23f0f6fc'>NW<tspan fill='%233fb68b'>.</tspan></text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --accent: #3fb68b;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+    }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-back {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ── Post ── */
+    .post-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 7rem 2rem 5rem;
+    }
+
+    .post-tag {
+      display: inline-block;
+      background: rgba(63,182,139,0.08);
+      border: 1px solid rgba(63,182,139,0.2);
+      color: var(--accent);
+      padding: 0.2rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .post-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Prose ── */
+    .post-body { color: var(--text); }
+
+    .post-body p {
+      margin-bottom: 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      color: var(--text-bright);
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-body h3 {
+      font-size: 1.1rem;
+      color: var(--text-bright);
+      font-weight: 600;
+      margin: 2rem 0 0.75rem;
+    }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.5rem 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body li { margin-bottom: 0.4rem; }
+
+    .post-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-body strong { color: var(--text-bright); font-weight: 600; }
+    .post-body em { color: var(--text-muted); font-style: italic; }
+
+    .post-body code {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.4em;
+      font-size: 0.88em;
+      font-family: 'Fira Code', 'Courier New', monospace;
+    }
+
+    .post-body pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 0 0.5rem 1.25rem;
+      margin: 0 0 1.5rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .post-body img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .post-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">NW<span>.</span></a>
+  <a class="nav-back" href="../index.html#blog">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Blog
+  </a>
+</nav>
+
+<div class="post-wrap">
+  <span class="post-tag">GIS &nbsp;·&nbsp; 3D Printing</span>
+  <h1 class="post-title">A Week of Printing, 100+ Magnets, and One Very Unique Map</h1>
+  <div class="post-meta">Nathan Walker &nbsp;·&nbsp; February 27, 2026 &nbsp;·&nbsp; 6 min read</div>
+
+  <div class="post-body">
+
+    <p>Sometimes the best projects start with a simple thought: <em>What if you could hold a GIS map in your hands?</em> Not just a flat map, but a fully interactive 3D model that shows how political boundaries cut across real terrain.</p>
+
+    <p>That idea turned into the <strong>3D Wisconsin Puzzle Elevation Map</strong> and somehow ended up winning <strong>Best in Category – Most Unique</strong> at WLIA's annual Map Contest.</p>
+
+    <p>The concept was simple: each county in Wisconsin becomes its own 3D-printed terrain tile. When assembled, they form the entire state. But instead of gluing the pieces together, I embedded precisely sized magnets into the bottom of each piece so the map can be pushed together to form the whole state on a fridge or other magnetic surface.</p>
+
+    <p>No glue. No fasteners. Just magnets on the bottom so WLIA attendees could build the state they manage so well.</p>
+
+    <p>The finished model took <strong>over a week of continuous print time</strong>, used <strong>more than 3,000 grams of filament</strong>, and required <strong>over 100 embedded magnets</strong>. If you include coding, testing print settings, experimenting with smoothing techniques, and making sure every county fit perfectly with its neighbors, the total time easily surpassed <strong>100 hours</strong>.</p>
+
+    <p>Honestly, figuring it all out was half the fun.</p>
+
+    <img src="../LargePuzzleMap.jpg" alt="The completed 3D Wisconsin Puzzle Elevation Map" />
+
+    <hr class="post-divider" />
+
+    <h2>Turning GIS Data into Physical Terrain</h2>
+
+    <p>One of the biggest technical challenges was making sure each county model aligned perfectly with the ones around it.</p>
+
+    <p>Plenty of tools can convert a digital elevation model (DEM) into a 3D surface. Packages like <em>rayshader</em> in R can do beautiful terrain rendering. But they generally assume square raster extents, which doesn't work when you're trying to make puzzle pieces shaped like counties.</p>
+
+    <p>So I took a different approach.</p>
+
+    <p>I wrote a <strong>custom Python workflow</strong> that loops through every county in Wisconsin and masks a DEM provided by the Wisconsin DNR. Once each county was isolated, I had to convert that masked elevation data into a printable 3D model.</p>
+
+    <p>Since no existing package handled that exact workflow, I built the conversion myself using:</p>
+
+    <ul>
+      <li><strong>rasterio</strong> for working with the elevation data</li>
+      <li><strong>shapely</strong> for geometry operations</li>
+      <li><strong>trimesh</strong> for constructing the final 3D meshes</li>
+    </ul>
+
+    <p>The first generation of models turned out <em>very</em> detailed — and much too detailed for printing. The terrain looked noisy and exaggerated at the scale of the map.</p>
+
+    <p>To fix that, I applied <strong>Gaussian smoothing using SciPy</strong>, experimenting with different values for the sigma parameter until the terrain looked more natural and readable. After a few iterations, the models finally had the right balance between detail and printability.</p>
+
+    <img src="../PuzzleMapBreakdown.jpg" alt="Individual county terrain tiles broken apart" />
+
+    <hr class="post-divider" />
+
+    <h2>The Result</h2>
+
+    <p>The final map lets you do something that's hard to appreciate on a computer screen: <strong>see and feel how political boundaries interact with real terrain</strong>. Rivers, ridges, and valleys suddenly make more sense when the map is sitting on a table in front of you.</p>
+
+    <p>And since each county is removable, you can explore the state piece by piece.</p>
+
+    <hr class="post-divider" />
+
+    <h2>The Auction Surprise</h2>
+
+    <p>During the event, Ruekert &amp; Mielke also purchased an additional small map that was donated to the <strong>silent auction</strong>. There was a lot more interest than I expected, and the bidding got surprisingly competitive.</p>
+
+    <img src="../SmallPuzzleMapSilentAuction.jpg" alt="Small puzzle map at the WLIA silent auction" />
+
+    <p>For anyone who didn't manage to win it… I may have <strong>some good news coming soon.</strong></p>
+
+    <hr class="post-divider" />
+
+    <h2>What's Next?</h2>
+
+    <p>This project was a blast to build, and I'm already thinking about ways to expand it. Future versions could include features like:</p>
+
+    <ul>
+      <li>Highways and major roads</li>
+      <li>Water and lakes</li>
+      <li>County population density visualized with elevation</li>
+      <li>Other states or regions</li>
+    </ul>
+
+    <p>For now, I'm just happy that I was able to take my question to a whole new level.</p>
+
+    <p>And apparently, people think it's pretty unique too.</p>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Nathan Walker &nbsp;·&nbsp; GIS Development &amp; Spatial Data Science</p>
+</footer>
+
+</body>
+</html>

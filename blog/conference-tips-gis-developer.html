@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting the Most Out of a Conference as a GIS Developer | Nathan Walker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1117'/><text x='50%' y='54%' dominant-baseline='central' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='12' fill='%23f0f6fc'>NW<tspan fill='%233fb68b'>.</tspan></text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --accent: #3fb68b;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+    }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-back {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ── Post ── */
+    .post-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 7rem 2rem 5rem;
+    }
+
+    .post-tag {
+      display: inline-block;
+      background: rgba(63,182,139,0.08);
+      border: 1px solid rgba(63,182,139,0.2);
+      color: var(--accent);
+      padding: 0.2rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .post-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Prose ── */
+    .post-body { color: var(--text); }
+
+    .post-body p {
+      margin-bottom: 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      color: var(--text-bright);
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-body h3 {
+      font-size: 1.05rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin: 1.75rem 0 0.5rem;
+    }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.5rem 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body li { margin-bottom: 0.4rem; }
+
+    .post-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-body strong { color: var(--text-bright); font-weight: 600; }
+    .post-body em { color: var(--text-muted); font-style: italic; }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 0 0.5rem 1.25rem;
+      margin: 0 0 1.5rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .post-body img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .post-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">NW<span>.</span></a>
+  <a class="nav-back" href="../index.html#blog">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Blog
+  </a>
+</nav>
+
+<div class="post-wrap">
+  <span class="post-tag">Career</span>
+  <h1 class="post-title">Getting the Most Out of a Conference as a GIS Developer</h1>
+  <div class="post-meta">Nathan Walker &nbsp;·&nbsp; March 3, 2026 &nbsp;·&nbsp; 5 min read</div>
+
+  <div class="post-body">
+
+    <p>Conferences can be incredibly valuable for GIS developers, but only if you approach them with a plan. It is easy to spend a few days listening to talks, collecting swag, and then returning home without much to show for it. I find that when I attend, following a three-stage process helps me benefit the most.</p>
+
+    <p>These tips are not universal, but hopefully they at least get you thinking about how to approach conferences more intentionally.</p>
+
+    <hr class="post-divider" />
+
+    <h2>Before the Conference</h2>
+
+    <p>This step is well recognized, but I find that most people do little more than build a schedule of sessions that interest them and plan travel logistics.</p>
+
+    <p>I find it extremely helpful to <strong>outline three or four clear goals</strong> before the conference. These goals guide which sessions you attend, the people you actively seek out, and how you spend your time.</p>
+
+    <p>For example, at the recent WLIA Annual Conference, I outlined three goals and a few related subgoals.</p>
+
+    <h3>Connect with our vendors</h3>
+    <ul>
+      <li>Discuss problems we were having with their software</li>
+      <li>Update them on how we use their application and provide feedback</li>
+      <li>Identify potential sales opportunities where their team and ours could collaborate</li>
+    </ul>
+
+    <h3>Grow my network</h3>
+    <ul>
+      <li>Talk to five returning connections</li>
+      <li>Make at least four new connections</li>
+    </ul>
+
+    <h3>Assess the industry</h3>
+    <ul>
+      <li>Who else is attending the event? Who is not?</li>
+      <li>How are competitors positioned? Are they active or inactive?</li>
+    </ul>
+
+    <p>These goals translate into clear action items once you are at the conference. It is easy to get lost in the hustle and bustle, so having a list of what you want to accomplish helps keep you focused.</p>
+
+    <p>Finally, if possible, <strong>plan to give a presentation or workshop</strong>. Presenting is often just as valuable for you as it is for the audience, if not more.</p>
+
+    <hr class="post-divider" />
+
+    <h2>At the Conference</h2>
+
+    <p>With the preparation done beforehand, you should already know what you are looking to accomplish, which sessions you want to attend, and who you want to talk to.</p>
+
+    <p>I recommend keeping your goal list on hand or on your phone and crossing items off as you accomplish them.</p>
+
+    <p>Sessions can be valuable, but it is important to <strong>stay flexible</strong>. Do not drift from talk to talk like you are attending college lectures. Be willing to skip a session if an interesting conversation starts in the hallway or at a booth. Those spontaneous discussions are often more valuable than a talk you might not have gotten much out of.</p>
+
+    <p>I also recommend <strong>taking very few notes during sessions</strong>. Many talks are recorded now, and presenters are usually happy to share slides. For me, heavy note-taking keeps my brain focused on writing instead of thinking.</p>
+
+    <p>What you really want is to stay engaged. Listen carefully, think critically about what is being said, and consider how it relates to your own work. The best presentations feel like conversations or stories, and you would not normally take notes during those.</p>
+
+    <p>After the day ends, that is the time to unpack everything you heard.</p>
+
+    <blockquote>Take notes then. Write down key ideas, build something small and quick, or talk through what you learned with a coworker, another attendee, or even an AI assistant. Just make sure you are the one leading the conversation.</blockquote>
+
+    <p>This process helps you internalize what you learned.</p>
+
+    <p>Also <strong>keep a running list of everyone you talk to</strong>. And I mean everyone. Write down their name, where they work, and a few notes about what you discussed. Those details become extremely useful later.</p>
+
+    <hr class="post-divider" />
+
+    <h2>After the Conference</h2>
+
+    <p><strong>Follow up. Follow up. Follow up.</strong></p>
+
+    <p>I said it three times because it is the easiest thing to forget. This is where that list of people you talked to becomes essential.</p>
+
+    <p>Send short messages to the people you met. Continue the conversation you started and keep those connections alive.</p>
+
+    <p>Next, <strong>evaluate your original goals</strong>. What worked? What did not? Why?</p>
+
+    <p>Finally, <strong>give a short presentation to your team</strong> about what you learned. Not everyone can attend conferences, so sharing insights helps spread the value. It also reinforces your own understanding and helps justify future conference attendance.</p>
+
+    <hr class="post-divider" />
+
+    <p>Hopefully this was helpful. If it was, feel free to <a href="../index.html#contact">send me a message</a> and let me know. I might just write more like this.</p>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Nathan Walker &nbsp;·&nbsp; GIS Development &amp; Spatial Data Science</p>
+</footer>
+
+</body>
+</html>
