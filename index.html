@@ -964,9 +964,9 @@
 
     <div class="filter-bar">
       <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="map">Maps</button>
-      <button class="filter-btn" data-filter="webapp">Web Apps</button>
       <button class="filter-btn" data-filter="code">Code</button>
+      <button class="filter-btn" data-filter="webapp">Web Apps</button>
+      <button class="filter-btn" data-filter="map">Maps</button>
       <button class="filter-btn" data-filter="research">Research</button>
       <button class="filter-btn" data-filter="poster">Posters</button>
       <button class="filter-btn" data-filter="tutorial">Tutorials / Workshops</button>
@@ -974,6 +974,131 @@
     </div>
 
     <div class="projects-grid">
+
+      <!-- Code examples -->
+      <a class="project-card" data-cat="code" data-code-file="script3_update_view_source_schema.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; ArcGIS API / AGO Administration</div>
+          <div class="card-title">AGO View Schema Update</div>
+          <div class="card-desc">Finds all Feature Service views in an ArcGIS Online organization that reference a given source Hosted Feature Layer, then sets <code>sourceSchemaChangesAllowed = True</code> on each — allowing schema changes to be made on the origin feature service.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="RepairURLsAndItemIDs.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; ArcGIS API / AGO Administration</div>
+          <div class="card-title">Web Map URL &amp; Item ID Repair</div>
+          <div class="card-desc">Scans every web map in an ArcGIS Online group (or entire org) for broken layer item IDs, then resolves replacements by searching the live service URL and falling back to title matching. Supports dry-run mode and recursively handles group layers and tables.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="ScanCCTVReportsForManholeConditions.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; Azure OpenAI · OCR · Infrastructure</div>
+          <div class="card-title">CCTV Sewer Report Scanner</div>
+          <div class="card-desc">OCR pipeline that converts scanned CCTV sewer inspection PDFs to text, then uses GPT-4o-mini to extract upstream and downstream manhole IDs and conditions from each report, outputting a structured CSV.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="DescribeFields.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; Azure OpenAI · ArcGIS · Data Management</div>
+          <div class="card-title">GIS Schema Auto-Documentation</div>
+          <div class="card-desc">Reads a field inventory CSV exported from ArcGIS Online and uses GPT-4o-mini to generate a concise 1–2 sentence description for each field based on its name, alias, type, and domain. Skips already-described rows to support incremental runs.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="InvertsFromManholes.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; GeoPandas · Spatial Analysis · Utilities</div>
+          <div class="card-title">Sewer Invert Upstream/Downstream Derivation</div>
+          <div class="card-desc">Spatially joins manhole inspection data to pipe network geometry, then compares invert elevations at each pipe endpoint to determine upstream and downstream flow direction across a sewer network.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="spatial_regression_IL_tracts.R" data-code-lang="r" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">R &mdash; Spatial Econometrics</div>
+          <div class="card-title">Spatial Regression: Illinois Census Tracts</div>
+          <div class="card-desc">Originally a GeoDa class assignment, rewritten in R. Compares OLS, Spatial Lag, and Spatial Error models predicting poverty and educational attainment across Illinois census tracts. Builds queen-contiguity spatial weights, runs Moran&rsquo;s I and Lagrange Multiplier diagnostics to select the appropriate model specification, and exports formatted comparison tables via stargazer.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="descriptive_stats_index_construction.R" data-code-lang="r" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">R &mdash; Data Analysis</div>
+          <div class="card-title">Descriptive Statistics &amp; Index Construction</div>
+          <div class="card-desc">Originally an SPSS class assignment, rewritten in R. Generates summary statistics (mean, median, IQR, skewness, kurtosis) and distribution plots for demographic and income variables across Illinois census tracts. Constructs a custom Educational Index via z-score normalization across four education attainment variables, and a Diversity Index based on deviation from proportional racial equality.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="correlation_analysis.R" data-code-lang="r" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">R &mdash; Statistics</div>
+          <div class="card-title">Correlation Analysis &amp; Matrix Visualization</div>
+          <div class="card-desc">Originally an SPSS class assignment, rewritten in R. Implements a reusable <code>correlation_tests()</code> function that runs Pearson correlation tests against a target field across any set of variables, returning coefficients, R&sup2;, and p-values. Applied across GSS 2018 and U.S. States datasets to examine relationships between age, education, crime, and income variables. Produces correlation matrix plots with significance markers via corrplot.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="CulversScriptPortrait.ino" data-code-lang="cpp" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">C++ &mdash; Arduino / IoT</div>
+          <div class="card-title">Culver's Flavor of the Day Tracker</div>
+          <div class="card-desc">ESP32 Arduino sketch that connects to WiFi, queries the Culver's locations API, and displays the Flavor of the Day for up to 9 nearby locations on a TFT display. Cycles through locations every 12 seconds and refreshes data every 50 minutes.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="topo-background.js" data-code-lang="javascript" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">JavaScript &mdash; Canvas / Generative Art</div>
+          <div class="card-title">Topographic Background Renderer</div>
+          <div class="card-desc">Procedurally generates an animated topographic contour line background using a Gaussian height field and Marching Squares. Peaks are randomized on each load, contours are extracted at multiple elevation levels, raw segments are chained into polylines, and each line draws itself in with a staggered ease-out animation.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Web Apps -->
+      <a class="project-card" data-cat="webapp"
+         href="https://walkergeospatial.github.io/BrickApplication/" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🧱</span>
+          <div class="card-tag">Web App · JavaScript · Three.js</div>
+          <div class="card-title">Brick Elevation Map Builder</div>
+          <div class="card-desc">Draw any region on Earth, generate a LEGO brick terrain model from real elevation and satellite imagery data, then export a parts list and printable build instructions.</div>
+          <span class="card-action">Open live app ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="webapp"
+         href="https://natewalk.shinyapps.io/MadisonCountyEnvironmentalEquity/" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">🌍</span>
+          <div class="card-tag">Web App · R Shiny</div>
+          <div class="card-title">Environmental Equity in Madison County</div>
+          <div class="card-desc">Interactive dashboard exploring environmental equity indicators across Madison County, Illinois. Built with R Shiny.</div>
+          <span class="card-action">Open live app ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="webapp"
+         href="https://natewalk.shinyapps.io/SpatialAutocorrelation/" target="_blank" rel="noopener">
+        <div class="card-body card-no-img">
+          <span class="card-icon">📊</span>
+          <div class="card-tag">Web App · R Shiny</div>
+          <div class="card-title">Spatial Autocorrelation Educational Tool</div>
+          <div class="card-desc">Interactive learning tool demonstrating spatial autocorrelation concepts for students and instructors.</div>
+          <span class="card-action">Open live app ↗</span>
+        </div>
+      </a>
 
       <!-- Maps -->
       <a class="project-card" data-cat="map" data-lightbox data-img="Bay_Area_Time_Series.jpg" href="#">
@@ -1046,40 +1171,6 @@
           <div class="card-title">Vietnam Relief Map</div>
           <div class="card-desc">3D relief map of Vietnam generated in Blender, highlighting the country's dramatic terrain and topographic features.</div>
           <span class="card-action">View full map ↗</span>
-        </div>
-      </a>
-
-      <!-- Web Apps -->
-      <a class="project-card" data-cat="webapp"
-         href="https://natewalk.shinyapps.io/MadisonCountyEnvironmentalEquity/" target="_blank" rel="noopener">
-        <div class="card-body card-no-img">
-          <span class="card-icon">🌍</span>
-          <div class="card-tag">Web App · R Shiny</div>
-          <div class="card-title">Environmental Equity in Madison County</div>
-          <div class="card-desc">Interactive dashboard exploring environmental equity indicators across Madison County, Illinois. Built with R Shiny.</div>
-          <span class="card-action">Open live app ↗</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="webapp"
-         href="https://natewalk.shinyapps.io/SpatialAutocorrelation/" target="_blank" rel="noopener">
-        <div class="card-body card-no-img">
-          <span class="card-icon">📊</span>
-          <div class="card-tag">Web App · R Shiny</div>
-          <div class="card-title">Spatial Autocorrelation Educational Tool</div>
-          <div class="card-desc">Interactive learning tool demonstrating spatial autocorrelation concepts for students and instructors.</div>
-          <span class="card-action">Open live app ↗</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="webapp"
-         href="https://walkergeospatial.github.io/BrickApplication/" target="_blank" rel="noopener">
-        <div class="card-body card-no-img">
-          <span class="card-icon">🧱</span>
-          <div class="card-tag">Web App · JavaScript · Three.js</div>
-          <div class="card-title">Brick Elevation Map Builder</div>
-          <div class="card-desc">Draw any region on Earth, generate a LEGO brick terrain model from real elevation and satellite imagery data, then export a parts list and printable build instructions.</div>
-          <span class="card-action">Open live app ↗</span>
         </div>
       </a>
 
@@ -1159,97 +1250,6 @@
         </div>
       </a>
 
-
-      <!-- Code examples -->
-      <a class="project-card" data-cat="code" data-code-file="spatial_regression_IL_tracts.R" data-code-lang="r" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">R &mdash; Spatial Econometrics</div>
-          <div class="card-title">Spatial Regression: Illinois Census Tracts</div>
-          <div class="card-desc">Originally a GeoDa class assignment, rewritten in R. Compares OLS, Spatial Lag, and Spatial Error models predicting poverty and educational attainment across Illinois census tracts. Builds queen-contiguity spatial weights, runs Moran&rsquo;s I and Lagrange Multiplier diagnostics to select the appropriate model specification, and exports formatted comparison tables via stargazer.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="descriptive_stats_index_construction.R" data-code-lang="r" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">R &mdash; Data Analysis</div>
-          <div class="card-title">Descriptive Statistics &amp; Index Construction</div>
-          <div class="card-desc">Originally an SPSS class assignment, rewritten in R. Generates summary statistics (mean, median, IQR, skewness, kurtosis) and distribution plots for demographic and income variables across Illinois census tracts. Constructs a custom Educational Index via z-score normalization across four education attainment variables, and a Diversity Index based on deviation from proportional racial equality.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="correlation_analysis.R" data-code-lang="r" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">R &mdash; Statistics</div>
-          <div class="card-title">Correlation Analysis &amp; Matrix Visualization</div>
-          <div class="card-desc">Originally an SPSS class assignment, rewritten in R. Implements a reusable <code>correlation_tests()</code> function that runs Pearson correlation tests against a target field across any set of variables, returning coefficients, R&sup2;, and p-values. Applied across GSS 2018 and U.S. States datasets to examine relationships between age, education, crime, and income variables. Produces correlation matrix plots with significance markers via corrplot.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="CulversScriptPortrait.ino" data-code-lang="cpp" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">C++ &mdash; Arduino / IoT</div>
-          <div class="card-title">Culver's Flavor of the Day Tracker</div>
-          <div class="card-desc">ESP32 Arduino sketch that connects to WiFi, queries the Culver's locations API, and displays the Flavor of the Day for up to 9 nearby locations on a TFT display. Cycles through locations every 12 seconds and refreshes data every 50 minutes.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="topo-background.js" data-code-lang="javascript" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">JavaScript &mdash; Canvas / Generative Art</div>
-          <div class="card-title">Topographic Background Renderer</div>
-          <div class="card-desc">Procedurally generates an animated topographic contour line background using a Gaussian height field and Marching Squares. Peaks are randomized on each load, contours are extracted at multiple elevation levels, raw segments are chained into polylines, and each line draws itself in with a staggered ease-out animation.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="script3_update_view_source_schema.py" data-code-lang="python" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">Python &mdash; ArcGIS API / AGO Administration</div>
-          <div class="card-title">AGO View Schema Update</div>
-          <div class="card-desc">Finds all Feature Service views in an ArcGIS Online organization that reference a given source Hosted Feature Layer, then sets <code>sourceSchemaChangesAllowed = True</code> on each — allowing schema changes to be made on the origin feature service.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="RepairURLsAndItemIDs.py" data-code-lang="python" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">Python &mdash; ArcGIS API / AGO Administration</div>
-          <div class="card-title">Web Map URL &amp; Item ID Repair</div>
-          <div class="card-desc">Scans every web map in an ArcGIS Online group (or entire org) for broken layer item IDs, then resolves replacements by searching the live service URL and falling back to title matching. Supports dry-run mode and recursively handles group layers and tables.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="ScanCCTVReportsForManholeConditions.py" data-code-lang="python" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">Python &mdash; Azure OpenAI · OCR · Infrastructure</div>
-          <div class="card-title">CCTV Sewer Report Scanner</div>
-          <div class="card-desc">OCR pipeline that converts scanned CCTV sewer inspection PDFs to text, then uses GPT-4o-mini to extract upstream and downstream manhole IDs and conditions from each report, outputting a structured CSV.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="DescribeFields.py" data-code-lang="python" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">Python &mdash; Azure OpenAI · ArcGIS · Data Management</div>
-          <div class="card-title">GIS Schema Auto-Documentation</div>
-          <div class="card-desc">Reads a field inventory CSV exported from ArcGIS Online and uses GPT-4o-mini to generate a concise 1–2 sentence description for each field based on its name, alias, type, and domain. Skips already-described rows to support incremental runs.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
-
-      <a class="project-card" data-cat="code" data-code-file="InvertsFromManholes.py" data-code-lang="python" href="#">
-        <div class="card-body card-no-img">
-          <div class="card-tag">Python &mdash; GeoPandas · Spatial Analysis · Utilities</div>
-          <div class="card-title">Sewer Invert Upstream/Downstream Derivation</div>
-          <div class="card-desc">Spatially joins manhole inspection data to pipe network geometry, then compares invert elevations at each pipe endpoint to determine upstream and downstream flow direction across a sewer network.</div>
-          <span class="card-action">View code &rarr;</span>
-        </div>
-      </a>
 
       <!-- Tutorials / Workshops -->
       <a class="project-card" data-cat="tutorial"
