@@ -1215,6 +1215,42 @@
         </div>
       </a>
 
+      <a class="project-card" data-cat="code" data-code-file="RepairURLsAndItemIDs.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; ArcGIS API / AGO Administration</div>
+          <div class="card-title">Web Map URL &amp; Item ID Repair</div>
+          <div class="card-desc">Scans every web map in an ArcGIS Online group (or entire org) for broken layer item IDs, then resolves replacements by searching the live service URL and falling back to title matching. Supports dry-run mode and recursively handles group layers and tables.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="ScanCCTVReportsForManholeConditions.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; Azure OpenAI · OCR · Infrastructure</div>
+          <div class="card-title">CCTV Sewer Report Scanner</div>
+          <div class="card-desc">OCR pipeline that converts scanned CCTV sewer inspection PDFs to text, then uses GPT-4o-mini to extract upstream and downstream manhole IDs and conditions from each report, outputting a structured CSV.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="DescribeFields.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; Azure OpenAI · ArcGIS · Data Management</div>
+          <div class="card-title">GIS Schema Auto-Documentation</div>
+          <div class="card-desc">Reads a field inventory CSV exported from ArcGIS Online and uses GPT-4o-mini to generate a concise 1–2 sentence description for each field based on its name, alias, type, and domain. Skips already-described rows to support incremental runs.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-code-file="InvertsFromManholes.py" data-code-lang="python" href="#">
+        <div class="card-body card-no-img">
+          <div class="card-tag">Python &mdash; GeoPandas · Spatial Analysis · Utilities</div>
+          <div class="card-title">Sewer Invert Upstream/Downstream Derivation</div>
+          <div class="card-desc">Spatially joins manhole inspection data to pipe network geometry, then compares invert elevations at each pipe endpoint to determine upstream and downstream flow direction across a sewer network.</div>
+          <span class="card-action">View code &rarr;</span>
+        </div>
+      </a>
+
       <!-- Tutorials / Workshops -->
       <a class="project-card" data-cat="tutorial"
          href="https://github.com/WalkerGeospatial/WLIA_AGO_HFL_Management" target="_blank" rel="noopener">
