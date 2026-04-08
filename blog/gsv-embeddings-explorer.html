@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Searching Street View with Text: Building a CV + Embeddings Pipeline | Nathan Walker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1117'/><text x='50%' y='54%' dominant-baseline='central' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='12' fill='%23f0f6fc'>NW<tspan fill='%233fb68b'>.</tspan></text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --accent: #3fb68b;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+    }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-back {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ── Post ── */
+    .post-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 7rem 2rem 5rem;
+    }
+
+    .post-tag {
+      display: inline-block;
+      background: rgba(63,182,139,0.08);
+      border: 1px solid rgba(63,182,139,0.2);
+      color: var(--accent);
+      padding: 0.2rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .post-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Prose ── */
+    .post-body { color: var(--text); }
+
+    .post-body p {
+      margin-bottom: 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      color: var(--text-bright);
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-body h3 {
+      font-size: 1.1rem;
+      color: var(--text-bright);
+      font-weight: 600;
+      margin: 2rem 0 0.75rem;
+    }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.5rem 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body li { margin-bottom: 0.4rem; }
+
+    .post-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-body code {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.4em;
+      font-size: 0.88em;
+      font-family: 'Fira Code', 'Courier New', monospace;
+    }
+
+    .post-body pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 0 0.5rem 1.25rem;
+      margin: 0 0 1.5rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .post-body img,
+    .post-body video {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">NW<span>.</span></a>
+  <a class="nav-back" href="../index.html#blog">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Blog
+  </a>
+</nav>
+
+<div class="post-wrap">
+  <span class="post-tag">Computer Vision &nbsp;·&nbsp; AI &nbsp;·&nbsp; GIS</span>
+  <h1 class="post-title">Searching Street View with Text: Building a CV + Embeddings Pipeline</h1>
+  <div class="post-meta">Nathan Walker &nbsp;·&nbsp; April 5, 2026 &nbsp;·&nbsp; 8 min read</div>
+
+  <div class="post-body">
+    <p>Last year I saw a presentation where a municipality had built their own Google Street View imagery for civil engineers and internal use. It was an awesome feat of resourcefulness and the municipality found it incredibly useful — but the analysis stopped at the imagery itself. With modern embeddings and AI, I wanted to see what kind of application could actually build on top of that data. The idea: use models to find features across all the images that you might care about, whether that's natural language search across images or automated object detection. Type <em>"construction zone"</em> and it finds them all, even if none of those images were ever tagged or labeled.</p>
+    <p>Where better to try this than my current town? The result is the <strong>GSV Embeddings Explorer</strong> — a computer vision and semantic search pipeline built on Google Street View imagery of Waukesha, WI.</p>
+
+    <h2>How It Works</h2>
+    <p>The pipeline has three independent stages that can each be run and resumed separately.</p>
+
+    <h3>Stage 1: Collecting the Imagery</h3>
+    <p>The first step was building a grid of candidate points across Waukesha using a bounding box and a 75-meter spacing. That produced around 6,700 candidate locations. For each one, I hit the Google Street View Metadata API to check whether a panorama actually exists nearby before downloading anything.</p>
+    <p>Only candidates with a real panorama get passed to the image download step. Each panorama gets captured at two headings (north and south), keeping the total image count under the 10,000 free tier limit. The final dataset came out to <strong>9,356 images</strong> across <strong>4,679 unique panorama points</strong>.</p>
+
+    <h3>Stage 2: Generating Embeddings</h3>
+    <p>With the images on disk, the next step was turning each one into a vector that captures its visual meaning. I used <strong>CLIP ViT-L/14</strong> (OpenAI's vision-language model) loaded via <code>open_clip_torch</code>. CLIP is trained to align images and text in the same embedding space, which is exactly what makes the text search possible.</p>
+    <p>Each image is encoded into a 768-dimensional vector and L2-normalized. All 9,356 vectors get stored in a <strong>FAISS IndexFlatIP</strong> index for exact cosine similarity search. The embedding step runs in batches of 128 on a GPU and completes in a few minutes.</p>
+
+    <blockquote>The key insight: CLIP doesn't need labels. It finds visually similar images to your text query because it learned what things look like from hundreds of millions of image-caption pairs.</blockquote>
+
+    <h3>Stage 3: Object Detection</h3>
+    <p>Beyond text search, I wanted to locate specific objects across the city. I used <strong>YOLOv8x</strong> pretrained on COCO to run detection passes across all images. Each object type gets its own independent run, its own output file, and its own map layer. So far the pipeline has detected:</p>
+    <ul>
+      <li>Traffic lights</li>
+      <li>Stop signs</li>
+      <li>Fire hydrants — 323 detections</li>
+      <li>Benches — 240 detections</li>
+    </ul>
+    <p>Each detection stores the bounding box, confidence score, heading, and coordinates so you can click a dot on the map and see exactly what the model found, with the box drawn directly over the image.</p>
+    <p>I also ran a <strong>SegFormer semantic segmentation</strong> pass using NVIDIA's model finetuned on Cityscapes to identify sidewalk coverage across the city. That produced <strong>3,189 images</strong> where sidewalks were meaningfully present, surfaced as their own toggleable map layer.</p>
+
+    <h2>The Application</h2>
+    <p>All of this feeds into a <strong>Flask + Leaflet.js</strong> web app. The map shows every panorama point as an orange dot. Clicking any dot opens the image and its metadata. Running a text search highlights the top matching results in blue and populates a sidebar with ranked result cards, each showing a thumbnail and a relevance score bar.</p>
+    <p>Every detection type lives on its own layer with a toggle in the header — traffic lights in green, stop signs in red, hydrants in orange, benches in purple, sidewalks in teal. Click any detection dot to open the image, and if it's a bounding-box detection, the box is drawn on a canvas overlay automatically.</p>
+
+    <video controls>
+      <source src="./gsv-showcase.mp4" type="video/mp4" />
+    </video>
+
+    <p>And for the most important use case — Wisconsin residents will be relieved to know you can search "kwik trip" and it works exactly as expected.</p>
+    <img src="./gsv-kwiktrip-search.png" alt="Searching for Kwik Trip in the GSV Embeddings Explorer" />
+
+    <h2>Why This Matters for Infrastructure</h2>
+    <p>The interesting thing about this project isn't just the technology — it's what the technology enables. A municipality could use a system like this to ask real operational questions:</p>
+    <ul>
+      <li>Where are all the fire hydrants within 500 feet of a new construction site?</li>
+      <li>Which streets are missing sidewalks on one side?</li>
+      <li>Where are stop signs that might be obstructed or faded?</li>
+    </ul>
+    <p>Right now this runs on Google Street View imagery, which is convenient but not always current. The next logical step is replacing GSV with local, more complete imagery — drive a town with a 360° camera, load the images into the same pipeline, and suddenly the municipality has a searchable, AI-analyzed record of their own infrastructure that can be re-run on a schedule to detect change.</p>
+
+    <h2>The Stack</h2>
+    <ul>
+      <li><strong>Image collection:</strong> Google Street View Static API + Metadata API</li>
+      <li><strong>Embeddings:</strong> CLIP ViT-L/14 via <code>open_clip_torch</code>, FAISS for search</li>
+      <li><strong>Object detection:</strong> YOLOv8x (ultralytics) pretrained on COCO 80 classes</li>
+      <li><strong>Segmentation:</strong> SegFormer-b0 finetuned on Cityscapes (HuggingFace Transformers)</li>
+      <li><strong>Backend:</strong> Flask</li>
+      <li><strong>Frontend:</strong> Leaflet.js, HTML Canvas for bounding box rendering</li>
+      <li><strong>Hardware:</strong> RTX 3060 Ti, CUDA 12.8</li>
+    </ul>
+
+    <p>The whole pipeline runs locally. No cloud GPUs, no managed services. Just Python, a consumer GPU, and a few public APIs.</p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Nathan Walker &nbsp;·&nbsp; GIS Development &amp; Spatial Data Science</p>
+</footer>
+
+</body>
+</html>
