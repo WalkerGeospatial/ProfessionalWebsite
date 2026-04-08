@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jobs Are in the Suburbs. Workers Are in the City. | Nathan Walker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1117'/><text x='50%' y='54%' dominant-baseline='central' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='12' fill='%23f0f6fc'>NW<tspan fill='%233fb68b'>.</tspan></text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --accent: #3fb68b;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+    }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-back {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    .post-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 7rem 2rem 5rem;
+    }
+
+    .post-tag {
+      display: inline-block;
+      background: rgba(63,182,139,0.08);
+      border: 1px solid rgba(63,182,139,0.2);
+      color: var(--accent);
+      padding: 0.2rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .post-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-body { color: var(--text); }
+
+    .post-body p {
+      margin-bottom: 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      color: var(--text-bright);
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-body h3 {
+      font-size: 1.1rem;
+      color: var(--text-bright);
+      font-weight: 600;
+      margin: 2rem 0 0.75rem;
+    }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.5rem 1.5rem;
+      line-height: 1.85;
+    }
+
+    .post-body li { margin-bottom: 0.4rem; }
+
+    .post-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-body code {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.4em;
+      font-size: 0.88em;
+      font-family: 'Fira Code', 'Courier New', monospace;
+    }
+
+    .post-body pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 0 0.5rem 1.25rem;
+      margin: 0 0 1.5rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .post-body img,
+    .post-body video {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">NW<span>.</span></a>
+  <a class="nav-back" href="../index.html#blog">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Blog
+  </a>
+</nav>
+
+<div class="post-wrap">
+  <span class="post-tag">GIS &nbsp;·&nbsp; Data Visualization &nbsp;·&nbsp; Economic Geography</span>
+  <h1 class="post-title">Jobs Are in the Suburbs. Workers Are in the City.</h1>
+  <div class="post-meta">Nathan Walker &nbsp;·&nbsp; April 10, 2026 &nbsp;·&nbsp; 7 min read</div>
+
+  <div class="post-body">
+    <p>Spatial mismatch is one of the most well-documented patterns in urban economics. The jobs accessible to low-income workers, typically lower-wage positions in retail, food service, and light industry, have steadily shifted to suburban areas over the past several decades. Meanwhile, the workers who need those jobs most tend to live in urban cores, far from where the work actually is. Milwaukee is one of the most cited examples of this pattern in the United States.</p>
+
+    <p>I wanted to build something that makes this visible in an immediate, intuitive way. The result is a <a href="https://walkergeospatial.github.io/Spatial-Mismatch/" target="_blank" rel="noopener">3D interactive map</a> built with React, Deck.gl, and MapLibre that shows the gap between low-income workers and low-wage jobs at the census tract level across the Milwaukee metro area.</p>
+
+    <h2>The Metric</h2>
+    <p>The core of the visualization is a simple calculation per tract:</p>
+
+    <blockquote>Workers below 200% of the federal poverty line minus low-wage jobs located in that tract.</blockquote>
+
+    <p>A positive number means a tract has more low-income workers than nearby jobs. A negative number means more jobs than workers. The color reflects direction: pink for worker surplus, green for job surplus. The height of each extruded column reflects the magnitude of the imbalance.</p>
+
+    <p>Two data sources feed into this:</p>
+    <ul>
+      <li><strong>ACS B17024 (2022 5-year estimates)</strong> - working-age population (18 to 64) below 200% of the poverty line, summed from five age groups across 13 income ratio variables each</li>
+      <li><strong>LODES WAC 2022</strong> - Census LEHD Origin-Destination Employment Statistics, specifically the CE01 wage tier covering jobs paying $1,250/month or less, aggregated from census block to tract</li>
+    </ul>
+
+    <h2>Building the Data Pipeline</h2>
+    <p>The pipeline runs entirely in Python. Each data source has its own fetch script, and a final export script joins everything to tract geometries and writes a single GeoJSON file.</p>
+
+    <h3>Workers: ACS B17024</h3>
+    <p>The ACS API returns poverty ratio data broken into age groups, with 13 variables per group. For working-age adults (18 to 64), I summed the first 8 offsets within each age group, which correspond to ratios below 200% of the poverty line. The groups and their starting variable offsets are:</p>
+
+    <pre><code>WORKING_AGE_GROUPS = {
+    "18_24": 41,
+    "25_34": 54,
+    "35_44": 67,
+    "45_54": 80,
+    "55_64": 93,
+}
+BELOW_200_OFFSETS = range(1, 9)</code></pre>
+
+    <h3>Jobs: LODES WAC</h3>
+    <p>LODES Workplace Area Characteristics files report job counts by census block. The CE01 field covers the lowest wage tier. I downloaded Wisconsin's 2022 WAC file, filtered to the 5-county Milwaukee metro, then aggregated block-level job counts up to the tract level using a pre-built block-to-tract crosswalk.</p>
+
+    <h3>Geometry: TIGER 2022</h3>
+    <p>Tract boundaries come from the Census TIGER 2022 state shapefile. Water-only tracts are filtered out using the <code>ALAND > 0</code> condition. To clean up the visualization, boundaries are simplified with a 50-meter tolerance in EPSG:3857 before reprojecting back to WGS84. This removes micro-jags in the polygon edges without visibly distorting tract shapes.</p>
+
+    <h2>The Application</h2>
+    <p>The frontend is a Vite + React app with no backend. The GeoJSON is fetched directly from the static host on load. All computation happens client-side: color assignment, elevation scaling, hover buffer calculations, and the county-level summary stats.</p>
+
+    <p>Deck.gl's <code>GeoJsonLayer</code> handles the 3D rendering with <code>extruded: true</code> and <code>wireframe: true</code>. The wireframe color is pink or green depending on the direction of the imbalance, which gives each column a clear identity even at a distance.</p>
+
+    <p>Hovering a tract optionally activates a travel buffer that highlights all tracts within a straight-line radius based on mode and time. Car, bus, and foot speeds are approximated in meters per minute, and the buffer is computed via haversine distance. It does not reflect actual travel time or road network constraints, since I don't have the resources currently to set that up for public use.</p>
+
+    <h2>What the Data Shows</h2>
+    <p>The pattern is stark. Milwaukee County has 186,147 low-income workers but only 101,374 low-wage jobs within its borders, a deficit of 84,773. The surrounding suburban counties have 89,477 low-wage jobs but only 67,934 low-income workers, a surplus of 21,543.</p>
+
+    <p>It is worth being precise about what this does and does not show. LODES counts jobs that exist in a location, not vacancies. Many of those suburban jobs are already filled by people who live nearby or commute from the city. The worker counts include people who may not be actively seeking work. This is a structural portrait, not a job board.</p>
+
+    <p>What it does show clearly is the geographic mismatch: the supply of low-income labor is concentrated in the urban core, and the demand for that labor is concentrated in the suburbs. That gap is real, documented, and visible in this data.</p>
+
+    <h2>The Stack</h2>
+    <ul>
+      <li><strong>Frontend:</strong> React, Deck.gl, MapLibre GL, Vite</li>
+      <li><strong>Data pipeline:</strong> Python, GeoPandas, pandas, Census API, LODES</li>
+      <li><strong>Data sources:</strong> ACS B17024 2022, LODES WAC 2022, TIGER 2022</li>
+      <li><strong>Hosting:</strong> GitHub Pages (fully static, no backend)</li>
+    </ul>
+
+    <p><a href="https://walkergeospatial.github.io/Spatial-Mismatch/" target="_blank" rel="noopener">Explore the live app here.</a></p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Nathan Walker &nbsp;·&nbsp; GIS Development &amp; Spatial Data Science</p>
+</footer>
+
+</body>
+</html>
